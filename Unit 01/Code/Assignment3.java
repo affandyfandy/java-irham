@@ -13,11 +13,14 @@ public class Assignment3 {
         if (input.length == 0) return new ArrayList<Integer>(){};
 
         List<Integer> result = new ArrayList<Integer>(){};
-        int largest = findLargest(input);
+        int largest = input[0];
         int second = input[0];
 
         for (int number : input) {
-            if (number > second && number < largest) {
+            if (number > largest) {
+                second = largest;
+                largest = number;
+            } else if (number > second && number < largest) {
                 second = number;
             }
         }
@@ -25,18 +28,6 @@ public class Assignment3 {
         for (int i = 0; i < input.length; i++) {
             if (input[i] == second) {
                 result.add(i);
-            }
-        }
-
-        return result;
-    }
-
-    private int findLargest(int[] input) {
-        int result = input[0];
-
-        for (int number : input) {
-            if (number > result) {
-                result = number;
             }
         }
 
