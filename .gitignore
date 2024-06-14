@@ -1,0 +1,24 @@
+# Java build output
+bin/
+target/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Compiled files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
