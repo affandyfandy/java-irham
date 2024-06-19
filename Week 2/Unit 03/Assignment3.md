@@ -126,3 +126,8 @@ public class ThrowsExample {
 ### Summary
 - **throw**: Used to throw an exception explicitly within a method or block.
 - **throws**: Used in method declarations to specify the types of exceptions that a method can throw.
+
+## Labs
+- [Lab 1: try to use try-with-resources](Assignment3-Lab/src/Lab1.java)
+- [Lab 2](Assignment3-Lab/src/Lab2.java)
+- [Lab 3](Assignment3-Lab/src/Lab3.java)
