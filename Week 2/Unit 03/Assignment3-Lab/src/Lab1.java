@@ -31,6 +31,8 @@ public class Lab1 {
         } catch (IOException e) {
             // Handle exceptions
             System.err.println("IOException occurred: " + e.getMessage());
+        } finally {
+            sc.close();
         }
     }
 }
