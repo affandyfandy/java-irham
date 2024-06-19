@@ -177,7 +177,7 @@ This class extends `Thread` and performs a withdrawal operation on the `BankAcco
 
 <br>
 
-**[BankApplication](Assignment4-Lab/src/BankApplication.java)**
+**[BankApplication.java](Assignment4-Lab/src/BankApplication.java)**
 ```java
 public class BankApplication {
     public static void main(String[] args) {
@@ -227,3 +227,42 @@ Thread-1 deposited 150.0. New balance: 550.0
 Thread-2 withdrew 100.0. New balance: 450.0
 Final balance: 450.0
 ```
+
+<br>
+
+## Write a Java program that sorts an array of integers using multiple threads.
+**[ArraySort.java](Assignment4-Lab/src/ArraySort.java)**
+
+<br>
+
+## What are noticeable things when using multiple thread?
+### 1. Thread Safety and Synchronization
+- **Race Conditions**: When two or more threads access shared data and try to change it simultaneously, race conditions can occur. This can lead to inconsistent or incorrect data.
+- **Synchronization**: Use synchronization mechanisms (like the `synchronized` keyword, locks, or concurrent data structures) to control access to shared resources and avoid race conditions.
+
+### 2. Deadlocks
+- **Definition**: A situation where two or more threads are blocked forever, waiting for each other.
+- **Prevention**: Avoid nested locks, use lock ordering, and consider timeouts when acquiring locks.
+
+### 3. Performance Overhead
+- **Context Switching**: Switching between threads involves overhead. Excessive context switching can degrade performance.
+- **Thread Creation**: Creating and destroying threads is costly in terms of performance. Use thread pools to manage and reuse threads.
+
+### 4. Concurrency Issues
+- **Atomicity**: Ensure that operations on shared variables are atomic. Use classes from `java.util.concurrent.atomic` package for atomic operations.
+- **Visibility**: Changes made by one thread might not be visible to other threads. Use `volatile` keyword or synchronization to ensure visibility of changes.
+
+### 5. Resource Management
+- **Memory**: Threads consume memory. Too many threads can lead to `OutOfMemoryError`.
+- **Resource Locking**: Properly manage locks and other resources to avoid resource leaks.
+
+### 6. Thread Coordiation
+- **Wait/Notify**: Use wait(), notify(), and notifyAll() methods for coordinating threads.
+- CountDownLatch, CyclicBarrier, Phaser: Higher-level synchronization utilities for coordinating multiple threads.
+
+### 7. Thread Lifecycle
+- **States**: Understand thread states (New, Runnable, Blocked, Waiting, Timed Waiting, Terminated) to manage thread lifecycle properly.
+- **Daemon Threads**: Use daemon threads for background tasks that should not prevent the JVM from exiting.
+
+### 8. Exceptions Handling
+**Uncaught Exceptions**: Unhandled exceptions in threads can terminate the thread. Use `Thread.UncaughtExceptionHandler` to handle such cases.
