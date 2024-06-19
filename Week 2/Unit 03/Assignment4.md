@@ -1,4 +1,5 @@
 # Assignment 4
+This document contains several sub-task for Assignment 4
 ## Deadlock in Java
 A **deadlock** is a situation in a concurrent system where two or more threads are unable to proceed because each is waiting for the other to release a resource they need. In simpler terms, it's a standstill where threads are stuck waiting for each other indefinitely.
 
@@ -93,3 +94,136 @@ public class DeadlockPreventionExample {
 ```
 By acquiring locks in a consistent order (resource1 followed by resource2), we prevent the circular wait condition, which is one of the necessary conditions for a deadlock to occur.
 
+## Creates a bank account with concurrent deposits and withdrawals using threads.
+**[BankAccount.java](Assignment4-Lab/src/BankAccount.java)**
+```java
+public class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    // Synchronized method to deposit money
+    public synchronized void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println(Thread.currentThread().getName() + " deposited " + amount + ". New balance: " + balance);
+        }
+    }
+
+    // Synchronized method to withdraw money
+    public synchronized void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println(Thread.currentThread().getName() + " withdrew " + amount + ". New balance: " + balance);
+        } else {
+            System.out.println(Thread.currentThread().getName() + " failed to withdraw " + amount + ". Insufficient balance.");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+```
+
+- This class has a `balance` field to store the account balance.
+- The `deposit` and `withdraw` methods are synchronized to ensure thread safety during concurrent access.
+- The `deposit` method adds the specified amount to the balance.
+- The `withdraw` method subtracts the specified amount from the balance if there are sufficient funds.
+
+<br>
+
+**[DepositThread.java](Assignment4-Lab/src/DepositThread.java)**
+```java
+public class DepositThread extends Thread {
+    private BankAccount account;
+    private double amount;
+
+    public DepositThread(BankAccount account, double amount) {
+        this.account = account;
+        this.amount = amount;
+    }
+
+    @Override
+    public void run() {
+        account.deposit(amount);
+    }
+}
+```
+This class extends `Thread` and performs a deposit operation on the `BankAccount` instance in its run method.
+
+<br>
+
+**[WithdrawThread.java](Assignment4-Lab/src/WithdrawThread.java)**
+```java
+public class WithdrawThread extends Thread {
+    private BankAccount account;
+    private double amount;
+
+    public WithdrawThread(BankAccount account, double amount) {
+        this.account = account;
+        this.amount = amount;
+    }
+
+    @Override
+    public void run() {
+        account.withdraw(amount);
+    }
+}
+```
+This class extends `Thread` and performs a withdrawal operation on the `BankAccount` instance in its run method.
+
+<br>
+
+**[BankApplication](Assignment4-Lab/src/BankApplication.java)**
+```java
+public class BankApplication {
+    public static void main(String[] args) {
+        // Create a bank account with an initial balance
+        BankAccount account = new BankAccount(1000.00);
+
+        // Create threads for concurrent deposits and withdrawals
+        Thread t1 = new DepositThread(account, 200.00);
+        Thread t2 = new DepositThread(account, 150.00);
+        Thread t3 = new WithdrawThread(account, 100.00);
+        Thread t4 = new WithdrawThread(account, 500.00);
+        Thread t5 = new WithdrawThread(account, 300.00);
+
+        // Start the threads
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
+
+        // Wait for all threads to finish
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+            t5.join();
+        } catch (InterruptedException e) {
+            System.err.println("Thread interrupted: " + e.getMessage());
+        }
+
+        // Print final balance
+        System.out.println("Final balance: " + account.getBalance());
+    }
+}
+```
+
+- This class contains the main method where the BankAccount is created and multiple DepositThread and WithdrawThread instances are started.
+- It waits for all threads to finish using the join method to ensure all operations are completed before printing the final balance.
+
+### Sample Output:
+```
+Thread-0 deposited 200.0. New balance: 1200.0
+Thread-3 withdrew 500.0. New balance: 700.0
+Thread-4 withdrew 300.0. New balance: 400.0
+Thread-1 deposited 150.0. New balance: 550.0
+Thread-2 withdrew 100.0. New balance: 450.0
+Final balance: 450.0
+```
