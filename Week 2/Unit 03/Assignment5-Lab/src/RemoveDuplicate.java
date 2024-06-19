@@ -17,9 +17,7 @@ public class RemoveDuplicate {
 
         System.out.print("Input file name: ");
         String inputFileName = basePath + scanner.nextLine();
-
-        System.out.print("Output file name: ");
-        String outputFileName = basePath + scanner.nextLine();
+        String outputFileName = basePath + "modified.csv";
         
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
         PrintWriter writer = new PrintWriter(new FileWriter(outputFileName))) {
