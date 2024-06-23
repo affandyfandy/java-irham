@@ -79,3 +79,43 @@ public class RemoveDuplicates {
 #### 3. Printing the Result:
 - Finally, we print the resulting list (`uniqueStrings`), which now contains only unique elements.
 
+## Remove Duplicated Lines using Key Field
+**[RemoveDuplicateCSV.java](RemoveDuplicateCSV.java)
+```java
+public class RemoveDuplicateCSV {
+    public static void main(String[] args) {
+        String inputFilePath = "Week 2/Unit 04/Assignment6/data/fruits.csv";
+        String outputFilePath = "Week 2/Unit 04/Assignment6/data/modified.csv";
+        String keyFieldName = "id";
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFilePath))) {
+            List<String> lines = reader.lines().collect(Collectors.toList());
+            if (lines.isEmpty()) return;
+
+            String header = lines.get(0);
+            List<String> headers = Arrays.asList(header.split(","));
+            int keyIndex = headers.indexOf(keyFieldName);
+            if (keyIndex == -1) throw new IllegalArgumentException("Invalid key field name");
+
+            List<String> uniqueLines = lines.stream()
+                                            .skip(1) // Skip header
+                                            .collect(Collectors.toMap(
+                                                line -> line.split(",")[keyIndex],
+                                                line -> line,
+                                                (existing, replacement) -> existing
+                                            ))
+                                            .values()
+                                            .stream()
+                                            .collect(Collectors.toList());
+
+
+            uniqueLines.add(0, header);
+
+            Files.write(Paths.get(outputFilePath), uniqueLines);
+        } catch (IOException e) {
+            System.out.println("I/O Error occured:" + e);
+        }
+    }
+}
+```
+
