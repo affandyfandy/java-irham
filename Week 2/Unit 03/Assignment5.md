@@ -237,3 +237,99 @@ public class ConvertListToMap {
     }
 }
 ```
+
+## `equal()` and `hashCode()` Methods in Java
+
+In Java, the `equals()` and `hashCode()` methods are crucial for comparing objects and for using objects as keys in collections like `HashMap`, `HashSet`, etc.
+
+## `equals()` Method
+
+The `equals()` method is used to compare two objects for equality. The default implementation in the `Object` class checks for reference equality, i.e., whether the two references point to the same object. However, you can override this method to provide your own definition of object equality based on the object's state.
+
+## `hashCode()` Method
+
+The `hashCode()` method returns an integer representation of the object, which is used for hashing in data structures like `HashMap`, `HashSet`, etc. The general contract of `hashCode()` is:
+
+1. **Consistent:** Multiple invocations of `hashCode()` on the same object should consistently return the same integer, provided no information used in `equals()` comparisons on the object is modified.
+2. **Equal objects must have equal hash codes:** If two objects are equal according to the `equals(Object)` method, then calling the `hashCode()` method on each of the two objects must produce the same integer result.
+3. **Unequal objects may have unequal hash codes:** It is not required for unequal objects to have distinct hash codes. However, producing distinct hash codes for unequal objects can improve the performance of hash tables.
+
+## Example
+
+Let's consider a class `Person` with `name` and `age` as attributes. We will override the `equals()` and `hashCode()` methods in this class.
+
+```java
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age && Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{name='" + name + "', age=" + age + '}';
+    }
+
+    public static void main(String[] args) {
+        Person person1 = new Person("Alice", 30);
+        Person person2 = new Person("Alice", 30);
+        Person person3 = new Person("Bob", 25);
+
+        // Check equality
+        System.out.println("person1 equals person2: " + person1.equals(person2)); // true
+        System.out.println("person1 equals person3: " + person1.equals(person3)); // false
+
+        // Check hash codes
+        System.out.println("person1 hashCode: " + person1.hashCode());
+        System.out.println("person2 hashCode: " + person2.hashCode());
+        System.out.println("person3 hashCode: " + person3.hashCode());
+
+        // Using Person objects in a HashSet
+        Set<Person> people = new HashSet<>();
+        people.add(person1);
+        people.add(person2);
+        people.add(person3);
+
+        System.out.println("People set: " + people);
+    }
+}
+```
+
+### Explanation
+#### 1. `equals()` Method:
+- First, it checks if the objects are the same instance using this == o.
+- Then, it checks if the other object is null or if they are from different classes.
+- Finally, it compares the state (i.e., `name` and `age`) of the objects.
+#### 2. `hashCode()` Method:
+- Uses `Objects.hash()` to generate a hash code based on the `name` and `age`.
+### 3. Usage:
+- The `equals()` method is used to compare two `Person` objects.
+- The `hashCode()` method ensures that `Person` objects with the same `name` and `age` will have the same hash code.
+- When adding `Person` objects to a `HashSet`, the `equals()` and `hashCode()` methods ensure that duplicate entries (objects with the same `name` and `age`) are not added.
+
+### Summary
+- The `equals()` method is used to define what it means for two objects to be equal.
+- The `hashCode()` method is used in hashing data structures to efficiently locate objects.
+- When you override `equals()`, you must also override `hashCode()` to maintain the contract between these methods.
+- Proper implementation of these methods is crucial for the correct functioning of collections that rely on hashing.
+
