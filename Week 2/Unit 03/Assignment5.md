@@ -435,3 +435,162 @@ Fruit{id=2, name='Banana', quantity=12}
 Fruit{id=3, name='Cherry', quantity=44}
 ```
 
+## Creating a Map of Employees with a Composite Key (Department, EmployeeID)
+
+In this example, we will demonstrate how to create a `Map` in Java where the key is a composite key consisting of `department` and `employeeID`, and the value is an `Employee` object.
+
+### Step-by-Step Implementation
+
+1. **Create an `Employee` class** with `department`, `employeeID`, `name`, and `position` as attributes.
+2. **Create a `CompositeKey` class** to represent the composite key with `department` and `employeeID` as attributes.
+3. **Override `equals()` and `hashCode()` methods** in the `CompositeKey` class to ensure proper key comparison.
+4. **Use a `HashMap`** to store `Employee` objects with `CompositeKey` as the key.
+
+### `Employee` Class
+
+```java
+public class Employee {
+    private String department;
+    private int employeeID;
+    private String name;
+    private String position;
+
+    public Employee(String department, int employeeID, String name, String position) {
+        this.department = department;
+        this.employeeID = employeeID;
+        this.name = name;
+        this.position = position;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "department='" + department + '\'' +
+                ", employeeID=" + employeeID +
+                ", name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                '}';
+    }
+}
+```
+
+### `CompositeKey` Class
+```java
+import java.util.Objects;
+
+public class CompositeKey {
+    private String department;
+    private int employeeID;
+
+    public CompositeKey(String department, int employeeID) {
+        this.department = department;
+        this.employeeID = employeeID;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompositeKey that = (CompositeKey) o;
+        return employeeID == that.employeeID &&
+                Objects.equals(department, that.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(department, employeeID);
+    }
+
+    @Override
+    public String toString() {
+        return "CompositeKey{" +
+                "department='" + department + '\'' +
+                ", employeeID=" + employeeID +
+                '}';
+    }
+}
+```
+
+### Using `HashMap` with `CompositeKey`
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<CompositeKey, Employee> employeeMap = new HashMap<>();
+
+        Employee emp1 = new Employee("IT", 101, "Alice", "Developer");
+        Employee emp2 = new Employee("HR", 102, "Bob", "Manager");
+        Employee emp3 = new Employee("Finance", 103, "Charlie", "Analyst");
+        Employee emp4 = new Employee("IT", 104, "David", "Tester");
+
+        CompositeKey key1 = new CompositeKey("IT", 101);
+        CompositeKey key2 = new CompositeKey("HR", 102);
+        CompositeKey key3 = new CompositeKey("Finance", 103);
+        CompositeKey key4 = new CompositeKey("IT", 104);
+
+        employeeMap.put(key1, emp1);
+        employeeMap.put(key2, emp2);
+        employeeMap.put(key3, emp3);
+        employeeMap.put(key4, emp4);
+
+        for (Map.Entry<CompositeKey, Employee> entry : employeeMap.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + " -> Value: " + entry.getValue());
+        }
+    }
+}
+```
+
+### Explanation
+#### 1. `Employee` Class:
+- Defines the attributes of an employee, including `department`, `employeeID`, `name`, and `position`.
+- The `toString()` method is overridden to provide a string representation of the `Employee` object.
+
+#### 2. `CompositeKey` Class:
+- Contains `department` and `employeeID` as attributes.
+- The `equals()` method is overridden to compare `CompositeKey` objects based on department and `employeeID`.
+- The `hashCode()` method is overridden to generate a hash code based on `department` and `employeeID`.
+- The `toString()` method is overridden to provide a string representation of the `CompositeKey` object.
+
+#### 4. Using `HashMap`:
+- A `HashMap` is used to store `Employee` objects with `CompositeKey` as the `key`.
+- Employees are added to the `HashMap` with unique composite keys.
+- The entries in the `HashMap` are iterated and printed, showing the mapping of composite keys to employee objects.
+
+
+### Output
+```arduino
+Key: CompositeKey{department='IT', employeeID=101} -> Value: Employee{department='IT', employeeID=101, name='Alice', position='Developer'}
+
+Key: CompositeKey{department='HR', employeeID=102} -> Value: Employee{department='HR', employeeID=102, name='Bob', position='Manager'}
+
+Key: CompositeKey{department='Finance', employeeID=103} -> Value: Employee{department='Finance', employeeID=103, name='Charlie', position='Analyst'}
+
+Key: CompositeKey{department='IT', employeeID=104} -> Value: Employee{department='IT', employeeID=104, name='David', position='Tester'}
+```
