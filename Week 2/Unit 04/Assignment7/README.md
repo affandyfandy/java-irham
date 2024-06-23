@@ -181,3 +181,55 @@ Intern{id=3, name='Michael Johnson', age=35, salary=5500.0}
 
 Intern with maximum salary: Intern{id=2, name='Jane Smith', age=28, salary=6000.0}
 ```
+
+## Convert Generic List to Map
+### [GenericListToMapConverter.java](GenericListToMapConverter.java)
+```java
+public class GenericListToMapConverter {
+    // Method to convert List<T> to Map<K, T> using a keyExtractor function
+    public static <T, K> Map<K, T> listToMap(List<T> list, Function<? super T, ? extends K> keyExtractor) {
+        return list.stream()
+                   .collect(Collectors.toMap(keyExtractor, Function.identity()));
+    }
+
+    public static void main(String[] args) {
+        // Example usage with a list of Employee objects
+        List<Employee> employees = List.of(
+            new Employee(1, "John Doe"),
+            new Employee(2, "Jane Smith"),
+            new Employee(3, "Michael Johnson"),
+            new Employee(4, "Emily Brown"),
+            new Employee(5, "David Williams")
+        );
+
+        // Convert list of employees to a map with ID as key
+        Map<Integer, Employee> employeeMapById = listToMap(employees, Employee::getId);
+        System.out.println("Employee map by ID:");
+        employeeMapById.forEach((id, emp) -> System.out.println("ID: " + id + ", Employee: " + emp));
+
+        System.out.println();
+
+        // Convert list of employees to a map with name as key
+        Map<String, Employee> employeeMapByName = listToMap(employees, Employee::getName);
+        System.out.println("Employee map by Name:");
+        employeeMapByName.forEach((name, emp) -> System.out.println("Name: " + name + ", Employee: " + emp));
+    }
+}
+```
+
+### Output
+```arduino
+Employee map by ID:
+ID: 1, Employee: Employee{id=1, name='John Doe'}
+ID: 2, Employee: Employee{id=2, name='Jane Smith'}
+ID: 3, Employee: Employee{id=3, name='Michael Johnson'}
+ID: 4, Employee: Employee{id=4, name='Emily Brown'}
+ID: 5, Employee: Employee{id=5, name='David Williams'}
+
+Employee map by Name:
+Name: David Williams, Employee: Employee{id=5, name='David Williams'}
+Name: John Doe, Employee: Employee{id=1, name='John Doe'}
+Name: Michael Johnson, Employee: Employee{id=3, name='Michael Johnson'}
+Name: Emily Brown, Employee: Employee{id=4, name='Emily Brown'}
+Name: Jane Smith, Employee: Employee{id=2, name='Jane Smith'}
+```
