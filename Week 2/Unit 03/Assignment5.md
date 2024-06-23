@@ -664,3 +664,119 @@ Hellen
 Rien
 Ruby
 ```
+
+## ConcurrentModificationException: Multiple Threads Accessing and Modifying a Shared Collection
+
+When multiple threads access and modify a shared collection concurrently, it can lead to inconsistent states and runtime exceptions, notably the `ConcurrentModificationException`. This exception occurs when a collection is modified while it is being iterated over, which can be particularly problematic in a multithreaded environment.
+
+### What is ConcurrentModificationException?
+
+`ConcurrentModificationException` is a runtime exception that is thrown when a collection is structurally modified after the creation of an iterator, except through the iterator's own `remove` method. Structural modifications refer to changes that affect the size of the collection, such as adding or removing elements.
+
+### Example Scenario
+
+Consider a scenario where multiple threads are iterating over and modifying a shared `ArrayList`.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConcurrentModificationExample {
+    public static void main(String[] args) {
+        List<String> sharedList = new ArrayList<>();
+        sharedList.add("Alice");
+        sharedList.add("Bob");
+        sharedList.add("Charlie");
+
+        Runnable task = () -> {
+            for (String name : sharedList) {
+                if (name.equals("Bob")) {
+                    sharedList.remove(name);
+                }
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+    }
+}
+```
+
+#### Explanation
+In this example, both `thread1` and `thread2` are iterating over the `sharedList` and attempting to remove the element "Bob". This concurrent modification can lead to a `ConcurrentModificationException`.
+
+### Preventing ConcurrentModificationException
+
+#### Synchronization
+Synchronizing access to the collection can prevent concurrent modifications. However, synchronization can reduce performance due to thread contention.
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SynchronizedExample {
+    public static void main(String[] args) {
+        List<String> sharedList = Collections.synchronizedList(new ArrayList<>());
+        sharedList.add("Alice");
+        sharedList.add("Bob");
+        sharedList.add("Charlie");
+
+        Runnable task = () -> {
+            synchronized (sharedList) {
+                for (String name : sharedList) {
+                    if (name.equals("Bob")) {
+                        sharedList.remove(name);
+                    }
+                }
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+    }
+}
+```
+
+#### Using Concurrent Collections
+Java provides concurrent collection classes that are designed for concurrent access and modification, such as `CopyOnWriteArrayList`, `ConcurrentHashMap`, etc.
+
+```java
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class ConcurrentCollectionExample {
+    public static void main(String[] args) {
+        List<String> sharedList = new CopyOnWriteArrayList<>();
+        sharedList.add("Alice");
+        sharedList.add("Bob");
+        sharedList.add("Charlie");
+
+        Runnable task = () -> {
+            for (String name : sharedList) {
+                if (name.equals("Bob")) {
+                    sharedList.remove(name);
+                }
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+    }
+}
+```
+
+#### Explanation
+`CopyOnWriteArrayList`: This class creates a copy of the underlying array with every write operation, thus avoiding `ConcurrentModificationException` during iteration. It is suitable for scenarios with more read operations than write operations.
+
+### Conclusion
+Concurrent modifications to a shared collection by multiple threads can lead to `ConcurrentModificationException`. To prevent this, synchronization mechanisms or concurrent collections like `CopyOnWriteArrayList` should be used. Understanding and handling concurrent modifications are essential for building robust multithreaded applications.
