@@ -204,3 +204,34 @@ Employee{id=2, name='Jane Smith', age=28, salary=6000.0}
 Any employee names match with keywords: true
 ```
 
+## Convert list employees to map with ID as key Using Java Streams
+### [ListToMap.java](ListToMap.java)
+```java
+public class ListToMap {
+    public static void main(String[] args) {
+        // Example list of employees
+        List<Employee> employees = List.of(
+            new Employee(1, "John Doe", 30, 5000),
+            new Employee(2, "Jane Smith", 28, 6000),
+            new Employee(3, "Michael Johnson", 35, 5500),
+            new Employee(4, "Emily Brown", 32, 5200),
+            new Employee(5, "David Williams", 31, 5800)
+        );
+
+        // Convert List<Employee> to Map<Integer, Employee> using streams
+        Map<Integer, Employee> employeeMap = employees.stream()
+                                                      .collect(Collectors.toMap(Employee::getId, emp -> emp));
+
+        // Print the resulting map
+        employeeMap.forEach((id, emp) -> System.out.println("ID: " + id + ", Employee: " + emp));
+    }
+}
+```
+### Output
+```arduino
+ID: 1, Employee: Employee{id=1, name='John Doe', age=30, salary=5000.0}
+ID: 2, Employee: Employee{id=2, name='Jane Smith', age=28, salary=6000.0}
+ID: 3, Employee: Employee{id=3, name='Michael Johnson', age=35, salary=5500.0}
+ID: 4, Employee: Employee{id=4, name='Emily Brown', age=32, salary=5200.0}
+ID: 5, Employee: Employee{id=5, name='David Williams', age=31, salary=5800.0}
+```
