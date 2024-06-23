@@ -322,7 +322,7 @@ public class Person {
 - Finally, it compares the state (i.e., `name` and `age`) of the objects.
 #### 2. `hashCode()` Method:
 - Uses `Objects.hash()` to generate a hash code based on the `name` and `age`.
-### 3. Usage:
+#### 3. Usage:
 - The `equals()` method is used to compare two `Person` objects.
 - The `hashCode()` method ensures that `Person` objects with the same `name` and `age` will have the same hash code.
 - When adding `Person` objects to a `HashSet`, the `equals()` and `hashCode()` methods ensure that duplicate entries (objects with the same `name` and `age`) are not added.
@@ -332,4 +332,106 @@ public class Person {
 - The `hashCode()` method is used in hashing data structures to efficiently locate objects.
 - When you override `equals()`, you must also override `hashCode()` to maintain the contract between these methods.
 - Proper implementation of these methods is crucial for the correct functioning of collections that rely on hashing.
+
+## Remove Duplicated ID with HashMap
+# Adding Fruits to HashSet and Recognizing Duplicates by Fruit ID
+
+In this example, we will demonstrate how to add fruits to a `HashSet` in Java and ensure it recognizes when two fruits have the same fruit ID by overriding the `equals()` and `hashCode()` methods.
+
+## Step-by-Step Implementation
+
+1. **Create a `Fruit` class** with `id`, `name`, and `quantity` as attributes.
+2. **Override `equals()` and `hashCode()` methods** in the `Fruit` class to ensure two `Fruit` objects are considered equal if they have the same `id`.
+3. **Add fruits to a `HashSet`** and check for duplicates.
+
+### `Fruit` Class with Overridden `equals()` and `hashCode()`
+
+```java
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+public class Fruit {
+    private int id;
+    private String name;
+    private int quantity;
+
+    public Fruit(int id, String name, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fruit fruit = (Fruit) o;
+        return id == fruit.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Fruit{id=" + id + ", name='" + name + "', quantity=" + quantity + "}";
+    }
+}
+```
+
+### Adding Fruits to `HashSet` and Checking for Duplicates
+```java
+public class Main {
+    public static void main(String[] args) {
+        Set<Fruit> fruits = new HashSet<>();
+
+        Fruit apple = new Fruit(1, "Apple", 20);
+        Fruit banana = new Fruit(2, "Banana", 12);
+        Fruit cherry = new Fruit(3, "Cherry", 44);
+        Fruit duplicateApple = new Fruit(1, "Apple", 25); // Duplicate ID
+
+        fruits.add(apple);
+        fruits.add(banana);
+        fruits.add(cherry);
+        fruits.add(duplicateApple); // Attempt to add duplicate
+
+        System.out.println("Fruits in the set:");
+        for (Fruit fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+}
+```
+
+### Explanation
+#### 1. `equals()` Method:
+- Compares the id of the Fruit objects to determine equality.
+#### 2. `hashCode()` Method:
+- Generates the hash code based on the `id` of the Fruit.
+#### 3. Using HashSet:
+- When adding fruits to the `HashSet`, it uses the `equals()` and `hashCode()` methods to check for duplicates.
+- Since `duplicateApple` has the same `id` as apple, it will not be added to the `HashSet`.
+
+### Output
+```
+Fruits in the set:
+Fruit{id=1, name='Apple', quantity=20}
+Fruit{id=2, name='Banana', quantity=12}
+Fruit{id=3, name='Cherry', quantity=44}
+```
 
