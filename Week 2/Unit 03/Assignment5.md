@@ -594,3 +594,73 @@ Key: CompositeKey{department='Finance', employeeID=103} -> Value: Employee{depar
 
 Key: CompositeKey{department='IT', employeeID=104} -> Value: Employee{department='IT', employeeID=104, name='David', position='Tester'}
 ```
+
+## What is issue with below code. Explain and fix?
+```java
+public static void demo1() {
+    List<String> data = new ArrayList<>();
+    data.add("Joe");
+    data.add("Hellen");
+    data.add("Test");
+    data.add("Rien");
+    data.add("Ruby");
+    for (String d : data) {
+        if (d.equals("Test")) {
+            data.remove(d);
+        }
+    }
+}
+```
+The provided code attempts to remove an element from a `List` while iterating over it using a for-each loop. This can lead to a `ConcurrentModificationException` because modifying a collection while iterating over it is generally not allowed with a for-each loop.
+
+> `ConcurrentModificationException`: The `for-each` loop internally uses an iterator to traverse the list. When the list is modified (i.e., an element is removed) during iteration, it invalidates the iterator, resulting in a `ConcurrentModificationException`.
+
+### Solution
+To fix this issue, we can use an `Iterator` explicitly, which allows for safe removal of elements during iteration.
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Main {
+    public static void demo1() {
+        List<String> data = new ArrayList<>();
+        data.add("Joe");
+        data.add("Hellen");
+        data.add("Test");
+        data.add("Rien");
+        data.add("Ruby");
+
+        Iterator<String> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            String d = iterator.next();
+            if (d.equals("Test")) {
+                iterator.remove();
+            }
+        }
+
+        // Print the modified list to verify the element was removed
+        for (String d : data) {
+            System.out.println(d);
+        }
+    }
+
+    public static void main(String[] args) {
+        demo1();
+    }
+}
+```
+#### Explanation
+- An `Iterator` is explicitly used to traverse the list.
+- The `iterator.hasNext()` method is used to check if there are more elements to iterate.
+- The `iterator.next()` method retrieves the next element.
+- The `iterator.remove()` method safely removes the current element from the list.
+
+### Output
+```
+Joe
+Hellen
+Rien
+Ruby
+```
