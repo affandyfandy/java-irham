@@ -47,3 +47,35 @@ public class ParallelStreamDemo {
 - **Mapping to Int**: The `mapToInt` method converts the Integer objects to primitive int values.
 - **Summing**: The `sum()` method calculates the sum of the elements in the stream.
 - **Printing**: The result is printed to the console.
+
+## Remove all duplicate elements from a list of string using streams.​
+
+**[RemoveDuplicates.java](RemoveDuplicates.java)**
+```java
+public class RemoveDuplicates {
+    public static void main(String[] args) {
+        // Creating a list of strings with duplicates
+        List<String> strings = Arrays.asList("apple", "banana", "apple", "orange", "banana", "grape");
+        
+        // Removing duplicates using streams
+        List<String> uniqueStrings = strings.stream()
+                                            .distinct()
+                                            .collect(Collectors.toList());
+        
+        // Printing the result
+        System.out.println("List with duplicates removed: " + uniqueStrings);
+    }
+}
+```
+### Explanation
+#### 1. Creating the List:
+- We start with a list of `strings` containing duplicates such as `"apple"`, `"banana"`, `"apple"`, `"orange"`, `"banana"`, `"grape"`.
+
+#### 2. Using Streams to Remove Duplicates:
+- `strings.stream()`: Converts the list into a stream of elements.
+- `.distinct()`: Applies a filter to keep only distinct elements in the stream.
+- `.collect(Collectors.toList())`: Collects the elements of the stream into a new list (`uniqueStrings`) without duplicates.
+
+#### 3. Printing the Result:
+- Finally, we print the resulting list (`uniqueStrings`), which now contains only unique elements.
+
