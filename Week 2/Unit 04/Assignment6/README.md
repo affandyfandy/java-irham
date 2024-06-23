@@ -80,7 +80,7 @@ public class RemoveDuplicates {
 - Finally, we print the resulting list (`uniqueStrings`), which now contains only unique elements.
 
 ## Remove Duplicated Lines using Key Field
-**[RemoveDuplicateCSV.java](RemoveDuplicateCSV.java)
+**[RemoveDuplicateCSV.java](RemoveDuplicateCSV.java)**
 ```java
 public class RemoveDuplicateCSV {
     public static void main(String[] args) {
