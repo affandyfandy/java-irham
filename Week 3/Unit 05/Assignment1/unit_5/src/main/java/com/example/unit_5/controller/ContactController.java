@@ -47,7 +47,7 @@ public class ContactController {
     }
     
     @PostMapping
-    public ResponseEntity createContact(@RequestBody Contact body) {
+    public ResponseEntity<Contact> createContact(@RequestBody Contact body) {
         Optional<Contact> request = repository.findById(body.getId());
         if (request.isPresent()) {
             return ResponseEntity.badRequest().build();
