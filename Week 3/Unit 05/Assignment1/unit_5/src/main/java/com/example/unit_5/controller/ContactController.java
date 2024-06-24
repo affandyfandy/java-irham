@@ -20,9 +20,6 @@ import com.example.unit_5.repository.ContactRepository;
 import lombok.AllArgsConstructor;
 
 
-
-
-
 @RestController
 @RequestMapping("/api/v1/contact")
 @AllArgsConstructor
@@ -39,17 +36,17 @@ public class ContactController {
         }
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Contact> getContactById(@PathVariable("id") String id) {
         Optional<Contact> response = repository.findById(id);
         if (response.isPresent()) {
-            ResponseEntity.ok(response);
+            return ResponseEntity.ok(response.get());
         }
         return ResponseEntity.noContent().build();
     }
     
-    @PostMapping("path")
+    @PostMapping
     public ResponseEntity createContact(@RequestBody Contact body) {
         Optional<Contact> request = repository.findById(body.getId());
         if (request.isPresent()) {
@@ -59,20 +56,23 @@ public class ContactController {
     }
     
     @PutMapping(value = "/{id}")
-    public ResponseEntity updateContact(
-        @PathVariable(value = "id") String id, 
-        @RequestBody Contact body) {
-        Optional<Contact> request = repository.findById(id);
-        if (request.isPresent()) {
-            Contact contact = request.get();
-            contact.setName(body.getName());
-            contact.setAge(body.getAge());
+    public ResponseEntity<Contact> updateContact(
+        @PathVariable(value = "id") String id,
+        @RequestBody Contact contactForm) {
+        Optional<Contact> contactOpt = repository.findById(id);
+        if(contactOpt.isPresent()) {
+            Contact contact = contactOpt.get();
+            if (contactForm.getName() != null) {
+                contact.setName(contactForm.getName());
+            }
+            if (contactForm.getAge() != null) {
+                contact.setAge(contactForm.getAge());
+            }
 
             Contact updatedContact = repository.save(contact);
             return ResponseEntity.ok(updatedContact);
         }
-
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping(value = "/{id}")
@@ -80,7 +80,7 @@ public class ContactController {
         Optional<Contact> contactOpt = repository.findById(id);
         if(contactOpt.isPresent()) {
             repository.delete(contactOpt.get());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(contactOpt.get());
 
         }
         return ResponseEntity.notFound().build();
