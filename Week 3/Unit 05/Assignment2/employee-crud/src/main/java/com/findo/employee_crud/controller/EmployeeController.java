@@ -32,12 +32,19 @@ public class EmployeeController {
     private final EmployeeRepository repository;
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        List<Employee> response = repository.findAll();
-        if (response.isEmpty()) {
+    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(value = "query", required = false) String query) {
+        List<Employee> employees;
+
+        if (query != null && !query.isEmpty()) {
+            employees = repository.searchEmployees(query);
+        } else {
+            employees = repository.findAll();
+        }
+
+        if (employees.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping(value = "/{id}")
@@ -98,15 +105,6 @@ public class EmployeeController {
         }
 
         repository.saveAll(employees);
-        return ResponseEntity.ok(employees);
-    }
-
-    @GetMapping("/by-department")
-    public ResponseEntity<List<Employee>> getEmployeesByDepartment(@RequestParam("department") String department) {
-        List<Employee> employees = repository.findByDepartment(department);
-        if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(employees);
     }
 }
