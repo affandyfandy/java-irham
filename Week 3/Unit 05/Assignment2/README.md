@@ -37,16 +37,23 @@ This code defines a Java class named `Employee` that is intended to be used as a
 ```java
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
-    List<Employee> findByDepartment(String department);
+    @Query("SELECT e FROM Employee e WHERE e.name LIKE %:query% OR e.address LIKE %:query% OR e.department LIKE %:query%")
+    List<Employee> searchEmployees(@Param("query") String query);
 }
 ```
-This code defines a repository interface for managing `Employee` entities in a Spring Boot application.
+### Repository Interface Declaration
+- `@Repository`: This annotation indicates that the interface is a Spring Data repository. It is a specialized component that provides CRUD operations for the entity.
+- `public interface EmployeeRepository`: This declares an interface named `EmployeeRepository`.
+- `extends JpaRepository<Employee, String>`: This interface extends `JpaRepository`, which is a Spring Data interface for generic CRUD operations. The `Employee` entity type is specified, and `String` is used as the type for the entity's ID.
 
-- `@Repository`: This annotation is used to indicate that the interface is a Spring Data Repository. It marks the interface as a candidate for Spring's component scanning to detect and create a bean for dependency injection.
+### Custom Query Method
+- `@Query`: This annotation defines a custom query using JPQL (Java Persistence Query Language). The query will be executed when the method searchEmployees is called.
+- `List<Employee> searchEmployees(@Param("query") String query)`: This method signature defines a custom method to search for employees based on a query string. It returns a list of Employee objects that match the search criteria.
+- `@Param("query") String` query: This annotation binds the method parameter query to the named parameter :query in the JPQL query.
 
-- `public interface EmployeeRepository`: This defines an interface named EmployeeRepository. In Java, interfaces are used to specify methods that a class must implement.
-
-- `extends JpaRepository<Employee, String>`: This indicates that `EmployeeRepository` extends the `JpaRepository` interface provided by Spring Data JPA. By extending `JpaRepository`, `EmployeeRepository` inherits several methods for working with `Employee` persistence, including methods for saving, deleting, and finding `Employee` entities.
+### JPQL Query
+- `SELECT e FROM Employee e`: This part of the query selects all Employee entities from the database.
+- `WHERE e.name LIKE %:query% OR e.address LIKE %:query% OR e.department LIKE %:query%`: This specifies the condition for the query. It uses the LIKE operator to match the query string with the name, address, and department fields of the Employee entity. The % characters are wildcards that allow partial matches. The query string is surrounded by % on both sides to find any employees whose name, address, or department contains the query string.
 
 ## Controller
 You can check the full code on [EmployeeController.java](employee-crud/src/main/java/com/findo/employee_crud/controller/EmployeeController.java) file.
@@ -97,42 +104,44 @@ This code defines a Spring Boot REST controller method that handles the uploadin
 #### Results
 ![Photo](img/upload.png)
 
-### Get Employee by Department
+### Get Employees
+On this API, I customize it to handle query. So, user can search employees by name, department, or address.
+
 ```java
-    @GetMapping("/by-department")
-    public ResponseEntity<List<Employee>> getEmployeesByDepartment(@RequestParam("department") String department) {
-        List<Employee> employees = repository.findByDepartment(department);
+    @GetMapping
+    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(value = "query", required = false) String query) {
+        List<Employee> employees;
+
+        if (query != null && !query.isEmpty()) {
+            employees = repository.searchEmployees(query);
+        } else {
+            employees = repository.findAll();
+        }
+
         if (employees.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(employees);
     }
 ```
-This code defines a Spring Boot REST controller method that handles GET requests to retrieve employees by their department.
-
-- `@GetMapping("/by-department")`: This annotation maps HTTP GET requests to `/by-department` to this method.
-
-- `public ResponseEntity<List<Employee>> getEmployeesByDepartment(@RequestParam("department") String department)`: This method accepts a department query parameter and returns a `ResponseEntity` containing a list of `Employee` objects.
-
-- `@RequestParam("department") String department`: This annotation binds the value of the department query parameter from the request URL to the department method parameter.
-
-- `List<Employee> employees = repository.findByDepartment(department);`: This line calls the `findByDepartment` method of the `EmployeeRepository` to retrieve a list of employees that belong to the specified department.
-
-- `if (employees.isEmpty())`: This condition checks if the list of employees is empty.
-
-- `return ResponseEntity.noContent().build();`: If the list is empty, it returns an HTTP 204 No Content response, indicating that there are no employees in the specified department.
-
-- `return ResponseEntity.ok(employees);`: If the list is not empty, it returns an HTTP 200 OK response with the list of employees in the specified department.
+- `@GetMapping`: This annotation indicates that the method should handle HTTP GET requests. The endpoint for this method is the root URL of the controller's mapping.
+- `public ResponseEntity<List<Employee>> getEmployees(@RequestParam(value = "query", required = false) String query)`: This method returns a ResponseEntity containing a list of Employee objects. The method takes an optional query parameter named query.
+- `List<Employee> employees;`: This declares a list to hold the employee records.
+- `employees = repository.searchEmployees(query);`: If the query parameter is provided and not empty, it calls the searchEmployees method from the `EmployeeRepository` to search for employees matching the query.
+- `employees = repository.findAll();`: If the query parameter is not provided or empty, it fetches all employee records from the repository using the findAll method.
 
 #### Results
-![Photo](img/by-department.png)
+**Get All Employee (without query)**
+![Photo](img/get-all.png)
+
+**With Query**
+
+On this example, I tried to search employees that contains **"dex"**.
+![Photo](img/search.png)
 
 ## Basic CRUD API
 ### Create Employee
 ![Photo](img/create.png)
-
-### Get All Employees
-![Photo](img/get-all.png)
 
 ### Get Employee by ID
 ![Photo](img/get-by-id.png)
