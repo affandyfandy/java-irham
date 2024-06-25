@@ -1,17 +1,8 @@
 package com.findo.employee_crud.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.findo.employee_crud.model.Employee;
 import com.findo.employee_crud.repository.EmployeeRepository;
+import com.findo.employee_crud.utils.FileUtils;
 
 import lombok.AllArgsConstructor;
 
@@ -99,31 +91,14 @@ public class EmployeeController {
 
     @PostMapping("/upload")
     public ResponseEntity<List<Employee>> uploadCsvFile(@RequestParam("file") MultipartFile file) {
-        List<Employee> employees = new ArrayList<>();
-        try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            CSVFormat csvFormat = CSVFormat.Builder.create()
-                .setHeader("ID", "Name", "DateOfBirth", "Address", "Department")
-                .setSkipHeaderRecord(true)
-                .build();
+        List<Employee> employees = FileUtils.getEmployeeFromCSV(file);
 
-            try (CSVParser csvParser = new CSVParser(reader, csvFormat)) {
-                for (CSVRecord csvRecord : csvParser) {
-                    Employee employee = new Employee();
-                    employee.setId(csvRecord.get("ID"));
-                    employee.setName(csvRecord.get("Name"));
-                    employee.setDob(new SimpleDateFormat("dd/MM/yyyy").parse(csvRecord.get("DateOfBirth")));
-                    employee.setAddress(csvRecord.get("Address"));
-                    employee.setDepartment(csvRecord.get("Department"));
-                    employees.add(employee);
-                }
-            }
-
-            repository.saveAll(employees);
-            return ResponseEntity.ok(employees);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+        if (employees.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+
+        repository.saveAll(employees);
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/by-department")
