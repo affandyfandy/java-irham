@@ -1,7 +1,7 @@
-# Assignment 4: REST API Best Practice
+# Assignment 3: REST API Best Practice
 Here's the best practice to implement REST API: https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/#h-accept-and-respond-with-json
 
-Based on the article, here's the comparison to the previous assignment (Unit 5 - Assignment 2).
+Based on the article, here's the comparison to the previous Assignment 2.
 
 | No. |            Aspect                            |  Checklist |
 |-----|----------------------------------------------|------------|
