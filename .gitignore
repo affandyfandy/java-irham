@@ -2,6 +2,8 @@
 bin/
 target/
 
+HELP.md
+
 # IDE files
 .idea/
 .vscode/
