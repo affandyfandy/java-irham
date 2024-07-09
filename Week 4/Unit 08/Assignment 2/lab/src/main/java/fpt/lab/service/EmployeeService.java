@@ -2,7 +2,7 @@ package fpt.lab.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,33 +12,60 @@ import fpt.lab.repository.EmployeeRepository;
 @Service
 public class EmployeeService {
     
-    @Autowired
-    private EmployeeRepository repository;
+    private final EmployeeRepository repository;
+
+    public EmployeeService(EmployeeRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional(transactionManager = "employeeTransactionManager")
     public int save(Employee employee) {
-        return repository.save(employee);
+        try {
+            return repository.save(employee);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     @Transactional(transactionManager = "employeeTransactionManager")
     public int update(Employee employee) {
-        return repository.update(employee);
+        try {
+            return repository.update(employee);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public Employee findById(String id) {
-        return repository.findById(id);
+        try {
+            return repository.findById(id);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     @Transactional(transactionManager = "employeeTransactionManager")
     public int deleteById(String id) {
-        return repository.deleteById(id);
+        try {
+            return repository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public List<Employee> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public List<Employee> search(String query) {
-        return repository.search(query);
+        try {
+            return repository.search(query);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 }

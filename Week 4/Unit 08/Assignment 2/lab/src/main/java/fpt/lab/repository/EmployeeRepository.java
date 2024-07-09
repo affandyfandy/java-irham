@@ -2,7 +2,6 @@ package fpt.lab.repository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,9 +12,11 @@ import fpt.lab.model.Employee;
 @Repository
 public class EmployeeRepository {
     
-    @Autowired
-    @Qualifier("employeeJdbcTemplate")
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public EmployeeRepository(@Qualifier("employeeJdbcTemplate") JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int save(Employee employee) {
         final String sql = "INSERT INTO Employee (id, name, dob, address, department) VALUES (?, ?, ?, ?, ?)";

@@ -2,7 +2,7 @@ package fpt.lab.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,33 +12,60 @@ import fpt.lab.repository.ContactRepository;
 @Service
 public class ContactService {
     
-    @Autowired
-    private ContactRepository repository;
+    private final ContactRepository repository;
+
+    public ContactService(ContactRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional(transactionManager = "contactTransactionManager")
     public int save(Contact contact) {
-        return repository.save(contact);
+        try {
+            return repository.save(contact);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     @Transactional(transactionManager = "contactTransactionManager")
     public int update(Contact contact) {
-        return repository.update(contact);
+        try {
+            return repository.update(contact);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public Contact findById(String id) {
-        return repository.findById(id);
+        try {
+            return repository.findById(id);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     @Transactional(transactionManager = "contactTransactionManager")
     public int deleteById(String id) {
-        return repository.deleteById(id);
+        try {
+            return repository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public List<Contact> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     public List<Contact> search(String query) {
-        return repository.search(query);
+        try {
+            return repository.search(query);
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 }
