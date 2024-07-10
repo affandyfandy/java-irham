@@ -24,7 +24,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     public ByteArrayInputStream generatePdf(String templateName, Map<String, Object> data) {
         Context context = new Context();
         context.setVariables(data);
-        String html = templateEngine.process("pdf/" + templateName, context); // Sertakan subdirektori
+        String html = templateEngine.process("pdf/" + templateName, context);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 

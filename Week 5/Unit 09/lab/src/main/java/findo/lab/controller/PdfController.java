@@ -30,7 +30,6 @@ public class PdfController {
     public ResponseEntity<InputStreamResource> generatePdf() throws IOException {
         List<Employee> employees = employeeService.findAll();
         
-        // Menghitung data yang diperlukan
         Employee highestSalaryEmployee = employees.stream().max(Comparator.comparing(Employee::getSalary)).orElse(null);
         Employee lowestSalaryEmployee = employees.stream().min(Comparator.comparing(Employee::getSalary)).orElse(null);
         int totalRecords = employees.size();
