@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import findo.lab.model.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
-    List<Employee> findAllByOrderByLastNameAsc();
-
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
+    List<Employee> findAllByOrderByNameAsc();
 }

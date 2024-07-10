@@ -10,69 +10,116 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-    <title>Employee management</title>
+    <title>Employee Management</title>
 </head>
 
 <body>
 
     <div class="container">
 
-        <h3>Employee management</h3>
+        <h3>Employee Management</h3>
         <hr>
 
-        <!-- Add a button -->
-        <a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
-            Add Employee
-        </a>
+        <!-- Add button -->
+        <div class="mb-3">
+            <a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm">
+                Add Employee
+            </a>
+            <!-- Upload CSV button -->
+            <form action="#" th:action="@{/employees/upload}" method="POST" enctype="multipart/form-data"
+                class="d-inline">
+                <input type="file" name="file" class="form-control-file" style="display:inline-block; width:auto;" />
+                <button type="submit" class="btn btn-success btn-sm">Upload CSV</button>
+            </form>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=0)}">First</a>
+                </li>
+                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage - 1})}">Previous</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:class="${currentPage == page} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${page})}" th:text="${page + 1}"></a>
+                </li>
+                <li th:class="${currentPage == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage + 1})}">Next</a>
+                </li>
+                <li th:class="${currentPage == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${totalPages - 1})}">Last</a>
+                </li>
+            </ul>
+        </nav>
 
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Address</th>
+                    <th>Department</th>
+                    <th>Salary</th>
                     <th>Action</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr th:each="tempEmployee : ${employees}">
-
-                    <td th:text="${tempEmployee.firstName}" />
-                    <td th:text="${tempEmployee.lastName}" />
-                    <td th:text="${tempEmployee.email}" />
-
+                    <td th:text="${tempEmployee.id}"></td>
+                    <td th:text="${tempEmployee.name}"></td>
+                    <td th:text="${#dates.format(tempEmployee.dob, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${tempEmployee.address}"></td>
+                    <td th:text="${tempEmployee.department}"></td>
+                    <td th:text="${tempEmployee.salary}"></td>
                     <td>
                         <div class="row">
-
                             <div class="col-small">
-                                <!-- Add "update" button/link -->
-                                <form action="#" th:action="@{/employees/showFormForUpdate}" method="POST">
-
+                                <!-- Update button -->
+                                <form action="#" th:action="@{/employees/showFormForUpdate}" method="POST"
+                                    class="d-inline">
                                     <input type="hidden" name="employeeId" th:value="${tempEmployee.id}" />
-                                    <button type="submit" class="btn btn-info btn-sm me-1"
-                                        style="float:left;">Update</button>
-
+                                    <button type="submit" class="btn btn-info btn-sm me-1">Update</button>
                                 </form>
-
-                                <!-- Add "delete" button/link -->
-                                <form action="#" th:action="@{/employees/delete}" method="POST">
-
+                                <!-- Delete button -->
+                                <form action="#" th:action="@{/employees/delete}" method="POST" class="d-inline">
                                     <input type="hidden" name="employeeId" th:value="${tempEmployee.id}" />
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
                                         Delete
                                     </button>
-
                                 </form>
                             </div>
-
                         </div>
                     </td>
-
                 </tr>
             </tbody>
         </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=0)}">First</a>
+                </li>
+                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage - 1})}">Previous</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:class="${currentPage == page} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${page})}" th:text="${page + 1}"></a>
+                </li>
+                <li th:class="${currentPage == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage + 1})}">Next</a>
+                </li>
+                <li th:class="${currentPage == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/employees/list(page=${totalPages - 1})}">Last</a>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 

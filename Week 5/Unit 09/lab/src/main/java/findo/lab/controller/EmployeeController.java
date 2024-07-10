@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import findo.lab.model.Employee;
 import findo.lab.service.EmployeeService;
 import lombok.AllArgsConstructor;
+
 
 @AllArgsConstructor
 @Controller
@@ -22,13 +24,15 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/list")
-    public String listEmployees(Model theModel) {
+    public String listEmployees(Model theModel, @RequestParam(defaultValue = "0") int page) {
+        int pageSize = 10;
+        List<Employee> theEmployees = employeeService.findPaginated(page, pageSize);
+        long totalEmployees = employeeService.countEmployees();
 
-        // get the employees from db
-        List<Employee> theEmployees = employeeService.findAll();
-
-        // add to the spring model
         theModel.addAttribute("employees", theEmployees);
+        theModel.addAttribute("currentPage", page);
+        theModel.addAttribute("totalEmployees", totalEmployees);
+        theModel.addAttribute("totalPages", (int) Math.ceil((double) totalEmployees / pageSize));
 
         return "employees/list-employees";
     }
@@ -45,7 +49,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/showFormForUpdate")
-    public String showFormForUpdate(@RequestParam("employeeId") int id,
+    public String showFormForUpdate(@RequestParam("employeeId") String id,
                                     Model theModel) {
 
         // get the employee from the service
@@ -69,7 +73,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("employeeId") int id) {
+    public String delete(@RequestParam("employeeId") String id) {
 
         // delete the employee
         employeeService.deleteById(id);
@@ -78,4 +82,11 @@ public class EmployeeController {
         return "redirect:/employees/list";
 
     }
+
+    @PostMapping("/upload")
+    public String uploadCSVFile(@RequestParam("file") MultipartFile file) {
+        employeeService.uploadCSVFile(file);
+        return "redirect:/employees/list";
+    }
+    
 }
