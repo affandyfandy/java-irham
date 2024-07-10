@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fsoft</title>
+  <style>
+    body {
+      font-family: "Roboto";
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    th {
+      word-wrap: break-word;
+    }
+
+    .customer-info {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h3,
+    h2 {
+      text-align: center;
+      color: #027ebc;
+    }
+
+    h4 {
+      margin: 10px 0;
+    }
+
+    .account-info {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      border: 2px solid black;
+    }
+
+    .account-info th,
+    .account-info td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    .account-info td::before {
+      content: ":";
+      padding-right: 10px;
+    }
+
+    .message-details th {
+      background-color: #027ebc;
+      color: #fff;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background-color: black;
+      margin: 20px 0;
+    }
+
+    @media print {
+      .page-break {
+        page-break-before: always;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2>FPT BE COURSE</h2>
+  <h3>Generate PDF</h3>
+  <div class="customer-info">
+    <p>User: <span>Irham Naufal</span></p>
+    <p>Date: <span th:text="${#dates.format(new java.util.Date(), 'dd/MM/yyyy')}"></span></p>
+  </div>
+  <hr />
+  <h4>Message Summary</h4>
+  <table class="account-info">
+    <tbody>
+      <tr>
+        <th>Employee highest salary</th>
+        <td><span th:text="${highestSalaryEmployee.name}">xxxxx</span></td>
+        <th>Max salary</th>
+        <td><span th:text="${highestSalaryEmployee.salary}">2200</span></td>
+      </tr>
+      <tr>
+        <th>Employee lowest salary</th>
+        <td><span th:text="${lowestSalaryEmployee.name}">vvvvv</span></td>
+        <th>Min salary</th>
+        <td><span th:text="${lowestSalaryEmployee.salary}">1000</span></td>
+      </tr>
+      <tr>
+        <th>Total records</th>
+        <td><span th:text="${totalRecords}">10</span></td>
+        <th>Average salary</th>
+        <td><span th:text="${averageSalary}">1500</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr style="background-color: #999" />
+  <h4>Message Details</h4>
+  <table class="message-details">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Dob</th>
+        <th>Address</th>
+        <th>Department</th>
+        <th>Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="employee, index : ${employees}">
+        <td th:text="${index.index + 1}"></td>
+        <td th:text="${employee.id}"></td>
+        <td th:text="${employee.name}"></td>
+        <td th:text="${#dates.format(employee.dob, 'dd/MM/yyyy')}"></td>
+        <td th:text="${employee.address}"></td>
+        <td th:text="${employee.department}"></td>
+        <td th:text="${employee.salary}"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

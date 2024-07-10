@@ -18,12 +18,10 @@
 </head>
 
 <body>
-
     <div class="container mt-5">
-
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Employee Management</h3>
-            <!-- Buttons for Add Employee and Upload CSV -->
+            <!-- Buttons for Add Employee, Upload CSV, and Generate PDF -->
             <div>
                 <a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm me-2">Add Employee</a>
                 <form action="#" th:action="@{/employees/upload}" method="POST" enctype="multipart/form-data"
@@ -32,6 +30,7 @@
                         style="display:inline-block; width:auto;" />
                     <button type="submit" class="btn btn-success btn-sm ms-2">Upload CSV</button>
                 </form>
+                <button class="btn btn-danger btn-sm ms-2" onclick="generatePDF()">Generate PDF</button>
             </div>
         </div>
 
@@ -95,8 +94,30 @@
                 </li>
             </ul>
         </nav>
-
     </div>
+
+    <!-- Script to Generate PDF -->
+    <script>
+        function generatePDF() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/employees/generate-pdf', true);
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = new Blob([xhr.response], { type: 'application/pdf' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'employee-list.pdf';
+                    link.click();
+                } else {
+                    alert('Failed to generate PDF. Please try again later.');
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
 
     <!-- Bootstrap JS Bundle (Popper included) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
