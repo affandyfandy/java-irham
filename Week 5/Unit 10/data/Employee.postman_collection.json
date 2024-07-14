@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "5ac56be9-f8b5-4af1-8f44-4ca20a2ab7d2",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22727428"
+	},
+	"item": [
+		{
+			"name": "Get Employees",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Query",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "web",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:13:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"09477098-78b0-45c3-9390-59ce15399cb5\",\n        \"name\": \"Kenzo Satoshi\",\n        \"dob\": \"1999-12-31T17:00:00.000+00:00\",\n        \"address\": \"Tokyo\",\n        \"department\": \"MOBILE\",\n        \"email\": \"kenzo@example.com\",\n        \"phone\": \"081212341234\"\n    },\n    {\n        \"id\": \"20ed1853-e218-44db-88f9-ac77b8b3d4bc\",\n        \"name\": \"Irham Naufal\",\n        \"dob\": \"1999-12-31T17:00:00.000+00:00\",\n        \"address\": \"Jakarta Selatan\",\n        \"department\": \"JAVA\",\n        \"email\": \"irham@example\",\n        \"phone\": \"081212341234\"\n    },\n    {\n        \"id\": \"f52900f8-484f-466e-aa39-d2dd1060fb13\",\n        \"name\": \"John Doe\",\n        \"dob\": \"1989-12-31T17:00:00.000+00:00\",\n        \"address\": \"123 Main St, City\",\n        \"department\": \"IT\",\n        \"email\": \"john.doe@example.com\",\n        \"phone\": \"1234567890\"\n    }\n]"
+				},
+				{
+					"name": "With Query",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees?query=irham",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "irham"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:14:27 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"20ed1853-e218-44db-88f9-ac77b8b3d4bc\",\n        \"name\": \"Irham Naufal\",\n        \"dob\": \"1999-12-31T17:00:00.000+00:00\",\n        \"address\": \"Jakarta Selatan\",\n        \"department\": \"JAVA\",\n        \"email\": \"irham@example\",\n        \"phone\": \"081212341234\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/test1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"test1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees/09477098-78b0-45c3-9390-59ce15399cb5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees",
+								"09477098-78b0-45c3-9390-59ce15399cb5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:15:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"09477098-78b0-45c3-9390-59ce15399cb5\",\n    \"name\": \"Kenzo Satoshi\",\n    \"dob\": \"1999-12-31T17:00:00.000+00:00\",\n    \"address\": \"Tokyo\",\n    \"department\": \"MOBILE\",\n    \"email\": \"kenzo@example.com\",\n    \"phone\": \"081212341234\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Changed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/test1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"test1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ok",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Name\",\n    \"dob\": \"1990-01-01\",\n    \"address\": \"456 Updated St, City\",\n    \"department\": \"HR\",\n    \"email\": \"updated.email@example.com\",\n    \"phone\": \"9876543210\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees/09477098-78b0-45c3-9390-59ce15399cb5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees",
+								"09477098-78b0-45c3-9390-59ce15399cb5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:16:56 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"09477098-78b0-45c3-9390-59ce15399cb5\",\n    \"name\": \"Updated Name\",\n    \"dob\": \"1990-01-01T00:00:00.000+00:00\",\n    \"address\": \"456 Updated St, City\",\n    \"department\": \"HR\",\n    \"email\": \"updated.email@example.com\",\n    \"phone\": \"9876543210\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/test1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"test1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Kenzo Satoshi\",\n    \"dob\": \"2000-01-01\",\n    \"address\": \"Tokyo\",\n    \"department\": \"MOBILE\",\n    \"email\": \"kenzo@example.com\",\n    \"phone\": \"081212341234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employees"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kenzo Satoshi\",\n    \"dob\": \"2000-01-01\",\n    \"address\": \"Tokyo\",\n    \"department\": \"MOBILE\",\n    \"email\": \"kenzo@example.com\",\n    \"phone\": \"081212341234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:12:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"09477098-78b0-45c3-9390-59ce15399cb5\",\n    \"name\": \"Kenzo Satoshi\",\n    \"dob\": \"2000-01-01T00:00:00.000+00:00\",\n    \"address\": \"Tokyo\",\n    \"department\": \"MOBILE\",\n    \"email\": \"kenzo@example.com\",\n    \"phone\": \"081212341234\"\n}"
+				},
+				{
+					"name": "invalid",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kenzo Satoshi\",\n    \"dob\": \"2000-01-01\",\n    \"address\": \"Tokyo\",\n    \"department\": \"MOBILE\",\n    \"email\": \"kenzo.com\",\n    \"phone\": \"0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"employees"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 12 Jul 2024 10:13:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"phone\": \"Phone number is invalid\",\n    \"email\": \"Email should be valid\"\n}"
+				}
+			]
+		}
+	]
+}
