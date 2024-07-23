@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import findo.lab.data.entity.Employee;
+import findo.lab.data.criteria.EmployeeSearchCriteria;
+import findo.lab.dto.EmployeeDTO;
 import findo.lab.service.EmployeeService;
 import lombok.AllArgsConstructor;
 
@@ -28,9 +29,11 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public ResponseEntity<Page<Employee>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<EmployeeDTO>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Optional<EmployeeSearchCriteria> criteria) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Employee> employees = employeeService.findAll(pageable);
+        Page<EmployeeDTO> employees = criteria.isEmpty() ? 
+                employeeService.findAll(pageable) : 
+                employeeService.searchEmployees(criteria.get(), pageable);
 
         if (employees.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -40,8 +43,8 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/{empNo}")
-    public ResponseEntity<Employee> findEmployeeById(@PathVariable("empNo") Integer empNo) {
-        Optional<Employee> employeeOpt= employeeService.findById(empNo);
+    public ResponseEntity<EmployeeDTO> findEmployeeById(@PathVariable("empNo") Integer empNo) {
+        Optional<EmployeeDTO> employeeOpt= employeeService.findById(empNo);
 
         if(employeeOpt.isPresent()) {
             return ResponseEntity.ok(employeeOpt.get());
@@ -51,31 +54,18 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> save(@RequestBody Employee employee) {
+    public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employee) {
         return ResponseEntity.ok(employeeService.save(employee));
     }
 
     @PutMapping(value = "/{empNo}")
-    public ResponseEntity<Employee> update(@PathVariable Integer empNo, @RequestBody Employee employee) {
-        Optional<Employee> employeeOpt = employeeService.findById(empNo);
-        
-        if (employeeOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        employee.setEmpNo(empNo);
-        return ResponseEntity.ok(employeeService.save(employee));
+    public ResponseEntity<EmployeeDTO> update(@PathVariable Integer empNo, @RequestBody EmployeeDTO employee) {
+        return ResponseEntity.ok(employeeService.update(empNo, employee));
     }
 
     @DeleteMapping(value = "/{empNo}")
-    public ResponseEntity<Employee> deleteEmployee(@PathVariable(value = "empNo") Integer empNo) {
-        Optional<Employee> employeeOpt = employeeService.findById(empNo);
-
-        if(employeeOpt.isPresent()) {
-            employeeService.deleteById(empNo);
-            return ResponseEntity.ok().build();
-        }
-
+    public ResponseEntity<EmployeeDTO> deleteEmployee(@PathVariable(value = "empNo") Integer empNo) {
+        employeeService.deleteById(empNo);
         return ResponseEntity.notFound().build();
     }
 }

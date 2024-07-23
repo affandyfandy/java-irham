@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import findo.lab.data.entity.Department;
+import findo.lab.dto.DepartmentDTO;
 import findo.lab.service.DepartmentService;
 import lombok.AllArgsConstructor;
 
@@ -28,9 +28,9 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @GetMapping
-    public ResponseEntity<Page<Department>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<DepartmentDTO>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Department> departments = departmentService.findAll(pageable);
+        Page<DepartmentDTO> departments = departmentService.findAll(pageable);
 
         if (departments.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -40,8 +40,8 @@ public class DepartmentController {
     }
 
     @GetMapping(value = "/{deptNo}")
-    public ResponseEntity<Department> findDepartmentById(@PathVariable("deptNo") String deptNo) {
-        Optional<Department> departmentOpt= departmentService.findById(deptNo);
+    public ResponseEntity<DepartmentDTO> findDepartmentById(@PathVariable("deptNo") String deptNo) {
+        Optional<DepartmentDTO> departmentOpt = departmentService.findById(deptNo);
 
         if(departmentOpt.isPresent()) {
             return ResponseEntity.ok(departmentOpt.get());
@@ -51,36 +51,18 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Department> save(@RequestBody Department department) {
-        Optional<Department> departmentOpt = departmentService.findById(department.getDeptNo());
-        
-        if (departmentOpt.isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
-
+    public ResponseEntity<DepartmentDTO> save(@RequestBody DepartmentDTO department) {
         return ResponseEntity.ok(departmentService.save(department));
     }
 
     @PutMapping(value = "/{deptNo}")
-    public ResponseEntity<Department> update(@PathVariable("deptNo") String deptNo, @RequestBody Department department) {
-        Optional<Department> departmentOpt = departmentService.findById(deptNo);
-        
-        if (departmentOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(departmentService.save(department));
+    public ResponseEntity<DepartmentDTO> update(@PathVariable("deptNo") String deptNo, @RequestBody DepartmentDTO department) {
+        return ResponseEntity.ok(departmentService.update(deptNo, department));
     }
 
     @DeleteMapping(value = "/{deptNo}")
-    public ResponseEntity<Department> deleteDepartment(@PathVariable(value = "deptNo") String deptNo) {
-        Optional<Department> departmentOpt = departmentService.findById(deptNo);
-
-        if(departmentOpt.isPresent()) {
-            departmentService.deleteById(deptNo);
-            return ResponseEntity.ok().build();
-        }
-
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<DepartmentDTO> deleteDepartment(@PathVariable(value = "deptNo") String deptNo) {
+        departmentService.deleteById(deptNo);
+        return ResponseEntity.ok().build();
     }
 }

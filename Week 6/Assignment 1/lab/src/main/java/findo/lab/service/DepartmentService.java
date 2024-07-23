@@ -5,11 +5,12 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import findo.lab.data.entity.Department;
+import findo.lab.dto.DepartmentDTO;
 
 public interface DepartmentService {
-    Page<Department> findAll(Pageable pageable);
-    Optional<Department> findById(String deptNo);
-    Department save(Department department);
+    Page<DepartmentDTO> findAll(Pageable pageable);
+    Optional<DepartmentDTO> findById(String deptNo);
+    DepartmentDTO save(DepartmentDTO department);
+    DepartmentDTO update(String id, DepartmentDTO department);
     void deleteById(String deptNo);
 }

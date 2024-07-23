@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import findo.lab.data.entity.Department;
 import findo.lab.data.repository.DepartmentRepository;
+import findo.lab.dto.DepartmentDTO;
 import findo.lab.service.DepartmentService;
 import lombok.AllArgsConstructor;
 
@@ -18,18 +19,29 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
 
     @Override
-    public Page<Department> findAll(Pageable pageable) {
-        return departmentRepository.findAll(pageable);
+    public Page<DepartmentDTO> findAll(Pageable pageable) {
+        Page<Department> departments = departmentRepository.findAll(pageable);
+        return departments.map(Department::toDTO);
     }
 
     @Override
-    public Optional<Department> findById(String deptNo) {
-        return departmentRepository.findById(deptNo);
+    public Optional<DepartmentDTO> findById(String deptNo) {
+        return departmentRepository.findById(deptNo).map(Department::toDTO);
     }
 
     @Override
-    public Department save(Department department) {
-        return departmentRepository.save(department);
+    public DepartmentDTO save(DepartmentDTO department) {
+        Department body = department.toEntity();
+        body = departmentRepository.save(body);
+        return body.toDTO();
+    }
+
+    @Override
+    public DepartmentDTO update(String id, DepartmentDTO department) {
+        Department body = departmentRepository.findById(id).get();
+        body.setDeptName(body.getDeptName());
+        body = departmentRepository.save(body);
+        return body.toDTO();
     }
 
     @Override

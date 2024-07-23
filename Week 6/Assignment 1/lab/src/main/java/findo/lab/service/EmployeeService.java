@@ -5,11 +5,14 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import findo.lab.data.entity.Employee;
+import findo.lab.data.criteria.EmployeeSearchCriteria;
+import findo.lab.dto.EmployeeDTO;
 
 public interface EmployeeService {
-    Page<Employee> findAll(Pageable pageable);
-    Optional<Employee> findById(Integer empNo);
-    Employee save(Employee employee);
+    Page<EmployeeDTO> findAll(Pageable pageable);
+    Page<EmployeeDTO> searchEmployees(EmployeeSearchCriteria criteria, Pageable pageable);
+    Optional<EmployeeDTO> findById(Integer empNo);
+    EmployeeDTO save(EmployeeDTO employee);
+    EmployeeDTO update(Integer id, EmployeeDTO employee);
     void deleteById(Integer empNo);
 }
