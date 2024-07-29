@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+
+    <title>Employee Management</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Employee Management</h3>
+            <!-- Buttons for Add Employee, Upload CSV, and Generate PDF -->
+            <div>
+                <a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm me-2">Add Employee</a>
+                <form action="#" th:action="@{/employees/upload}" method="POST" enctype="multipart/form-data"
+                    class="d-inline">
+                    <input type="file" name="file" class="form-control-file"
+                        style="display:inline-block; width:auto;" />
+                    <button type="submit" class="btn btn-success btn-sm ms-2">Upload CSV</button>
+                </form>
+                <button class="btn btn-danger btn-sm ms-2" onclick="generatePDF()">Generate PDF</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>Address</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.id}"></td>
+                        <td th:text="${employee.name}"></td>
+                        <td th:text="${#dates.format(employee.dob, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${employee.address}"></td>
+                        <td th:text="${employee.department}"></td>
+                        <td th:text="${employee.salary}"></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form th:action="@{/employees/showFormForUpdate}" method="POST">
+                                    <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                </form>
+                                <form th:action="@{/employees/delete}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this employee?')">
+                                    <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/employees/list(page=0)}">First</a>
+                </li>
+                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage - 1})}">Previous</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+                    th:class="${currentPage == page} ? 'active'">
+                    <a class="page-link" th:href="@{/employees/list(page=${page})}" th:text="${page + 1}"></a>
+                </li>
+                <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/employees/list(page=${currentPage + 1})}">Next</a>
+                </li>
+                <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/employees/list(page=${totalPages - 1})}">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Script to Generate PDF -->
+    <script>
+        function generatePDF() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/employees/generate-pdf', true);
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = new Blob([xhr.response], { type: 'application/pdf' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'employee-list.pdf';
+                    link.click();
+                } else {
+                    alert('Failed to generate PDF. Please try again later.');
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
+
+    <!-- Bootstrap JS Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-uzI1q+nTFzE3+wHlwFskLrHq6Og9L/3sZkCJiIe3ltfBZ3kr6ym3iuXwMDmZIt6q"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
