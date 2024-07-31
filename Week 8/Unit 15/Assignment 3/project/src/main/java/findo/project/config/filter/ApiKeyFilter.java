@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import findo.project.data.entity.ApiKey;
 import findo.project.data.repository.ApiKeyRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,11 +31,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key");
             return;
         }
-
-        ApiKey apiKeyEntity = apiKeyRepository.findByApiKey(apiKey).get();
-        apiKeyEntity.setLastUsed(LocalDateTime.now());
-        apiKeyRepository.save(apiKeyEntity);
-        response.setHeader("username", apiKeyEntity.getUsername());
 
         filterChain.doFilter(request, response);
     }
