@@ -18,6 +18,9 @@ public interface InvoiceMapper {
 
     InvoiceMapper INSTANCE = Mappers.getMapper(InvoiceMapper.class);
 
+    @Mapping(target = "products", ignore = true)
+    InvoiceDTO invoiceToInvoiceDTO(Invoice invoice);
+
     @Mapping(source = "invoice.productIds", target = "products")
     InvoiceDTO invoiceToInvoiceDTO(Invoice invoice, @Context ProductClient productClient);
 

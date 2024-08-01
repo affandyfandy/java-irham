@@ -23,14 +23,14 @@ public class InvoiceController {
     
     final private InvoiceService invoiceService;
 
-    @GetMapping
-    public ResponseEntity<List<InvoiceDTO>> getInvoiceList() {
-        return ResponseEntity.ok(invoiceService.getAllInvoices());
+    @GetMapping("/feign")
+    public ResponseEntity<List<InvoiceDTO>> getInvoiceListWithFeignClient() {
+        return ResponseEntity.ok(invoiceService.getAllInvoicesWithFeignClient());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<InvoiceDTO> getInvoiceById(@PathVariable int id) {
-        Optional<InvoiceDTO> invoice = invoiceService.getInvoiceById(id);
+    @GetMapping("/feign/{id}")
+    public ResponseEntity<InvoiceDTO> getInvoiceByIdWithFeignClient(@PathVariable int id) {
+        Optional<InvoiceDTO> invoice = invoiceService.getInvoiceByIdWithFeignClient(id);
         return invoice.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -39,9 +39,31 @@ public class InvoiceController {
         return invoiceService.createInvoiceWithFeignClient(invoice);
     }
 
+    @GetMapping("/rest-template")
+    public ResponseEntity<List<InvoiceDTO>> getInvoiceListWithRestTemplate() {
+        return ResponseEntity.ok(invoiceService.getAllInvoicesWithRestTemplate());
+    }
+
+    @GetMapping("/rest-template/{id}")
+    public ResponseEntity<InvoiceDTO> getInvoiceByIdWithRestTemplate(@PathVariable int id) {
+        Optional<InvoiceDTO> invoice = invoiceService.getInvoiceByIdWithRestTemplate(id);
+        return invoice.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/rest-template")
     public Invoice createInvoiceWithRestTemplate(@RequestBody Invoice invoice) {
         return invoiceService.createInvoiceWithRestTemplate(invoice);
+    }
+
+    @GetMapping("/web-client")
+    public ResponseEntity<List<InvoiceDTO>> getInvoiceListWithWebClient() {
+        return ResponseEntity.ok(invoiceService.getAllInvoicesWithWebClient());
+    }
+
+    @GetMapping("/web-client/{id}")
+    public ResponseEntity<InvoiceDTO> getInvoiceByIdWithWebClient(@PathVariable int id) {
+        Optional<InvoiceDTO> invoice = invoiceService.getInvoiceByIdWithWebClient(id);
+        return invoice.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/web-client")
