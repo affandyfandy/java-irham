@@ -97,7 +97,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         if (!inactiveProductIds.isEmpty()) {
             String message = generateInactiveProductMessage(inactiveProductIds);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product is inactive");
         }
 
         Invoice invoice = invoiceDTO.toEntity();
@@ -166,7 +166,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         if (!inactiveProductIds.isEmpty()) {
             String message = generateInactiveProductMessage(inactiveProductIds);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product is inactive");
         }
 
         existingInvoice.setCustomer(customer);
