@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  cloud:
+    gateway:
+
+      routes:
+        - id: product-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/products/**
+          filters:
+            - name: ApiKeyFilter
+
+        - id: invoice-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/invoices/**
+          filters:
+            - name: ApiKeyFilter
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
