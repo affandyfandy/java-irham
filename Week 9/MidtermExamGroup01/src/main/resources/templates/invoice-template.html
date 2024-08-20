@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Invoices</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            font-size: 10px; 
+        }
+        h1 {
+            font-size: 16px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>All Invoice Products</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Created Time</th>
+                <th>Updated Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="invoiceProduct : ${invoiceProducts}">
+                <td th:text="${invoiceProduct.invoice.id}"></td>
+                <td th:text="${invoiceProduct.invoice.customer.id}"></td>
+                <td th:text="${invoiceProduct.invoice.customer.name}"></td>
+                <td th:text="${invoiceProduct.product.id}"></td>
+                <td th:text="${invoiceProduct.product.name}"></td>
+                <td th:text="${invoiceProduct.quantity}"></td>
+                <td th:text="${invoiceProduct.price}"></td>
+                <td th:text="${invoiceProduct.amount}"></td>
+                <td th:text="${invoiceProduct.createdTime}"></td>
+                <td th:text="${invoiceProduct.updatedTime}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
