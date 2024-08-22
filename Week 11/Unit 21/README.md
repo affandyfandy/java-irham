@@ -99,3 +99,13 @@ Angular components go through several stages from creation to destruction. These
     }
     ```
 
+## Task 4 - Non-Standalone vs Standalone
+- [Non-Standalone Project](non-standalone-app)
+- [Standalone Project](standalone-app)
+
+### Why we should use Standalone?
+1. **Reduced Complexity**: Standalone components reduce the overall complexity of Angular applications by removing the need for NgModules. This makes the development process more straightforward and the codebase easier to manage.
+
+2. **Enhanced Modularity**: With standalone components, each component is self-contained, leading to better modularity and reusability. This is particularly beneficial in large applications or when building libraries and design systems.
+
+3. **Simplified Dependency Management**: Standalone components manage their dependencies directly, which leads to a clearer and more maintainable dependency graph. This also helps in reducing the bundle size by including only what's necessary.
