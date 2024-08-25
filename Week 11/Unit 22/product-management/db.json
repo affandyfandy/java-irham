@@ -1,0 +1,124 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Product A",
+            "price": 100.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-01T12:00:00Z",
+            "updatedAt": "2023-01-01T12:00:00Z"
+        },
+        {
+            "id": 2,
+            "name": "Product B",
+            "price": 200.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-02T12:00:00Z",
+            "updatedAt": "2023-01-02T12:00:00Z"
+        },
+        {
+            "id": 3,
+            "name": "Product C",
+            "price": 150.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-03T12:00:00Z",
+            "updatedAt": "2023-01-03T12:00:00Z"
+        },
+        {
+            "id": 4,
+            "name": "Product D",
+            "price": 120.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-04T12:00:00Z",
+            "updatedAt": "2023-01-04T12:00:00Z"
+        },
+        {
+            "id": 5,
+            "name": "Product E",
+            "price": 80.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-05T12:00:00Z",
+            "updatedAt": "2023-01-05T12:00:00Z"
+        },
+        {
+            "id": 6,
+            "name": "Product F",
+            "price": 300.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-06T12:00:00Z",
+            "updatedAt": "2023-01-06T12:00:00Z"
+        },
+        {
+            "id": 7,
+            "name": "Product G",
+            "price": 250.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-07T12:00:00Z",
+            "updatedAt": "2023-01-07T12:00:00Z"
+        },
+        {
+            "id": 8,
+            "name": "Product H",
+            "price": 90.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-08T12:00:00Z",
+            "updatedAt": "2023-01-08T12:00:00Z"
+        },
+        {
+            "id": 9,
+            "name": "Product I",
+            "price": 110.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-09T12:00:00Z",
+            "updatedAt": "2023-01-09T12:00:00Z"
+        },
+        {
+            "id": 10,
+            "name": "Product J",
+            "price": 210.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-10T12:00:00Z",
+            "updatedAt": "2023-01-10T12:00:00Z"
+        },
+        {
+            "id": 11,
+            "name": "Product K",
+            "price": 130.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-11T12:00:00Z",
+            "updatedAt": "2023-01-11T12:00:00Z"
+        },
+        {
+            "id": 12,
+            "name": "Product L",
+            "price": 160.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-12T12:00:00Z",
+            "updatedAt": "2023-01-12T12:00:00Z"
+        },
+        {
+            "id": 13,
+            "name": "Product M",
+            "price": 140.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-13T12:00:00Z",
+            "updatedAt": "2023-01-13T12:00:00Z"
+        },
+        {
+            "id": 14,
+            "name": "Product N",
+            "price": 270.00,
+            "status": "INACTIVE",
+            "createdAt": "2023-01-14T12:00:00Z",
+            "updatedAt": "2023-01-14T12:00:00Z"
+        },
+        {
+            "id": 15,
+            "name": "Product O",
+            "price": 220.00,
+            "status": "ACTIVE",
+            "createdAt": "2023-01-15T12:00:00Z",
+            "updatedAt": "2023-01-15T12:00:00Z"
+        }
+    ]
+}

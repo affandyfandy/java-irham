@@ -1,0 +1,27 @@
+<div>
+    <input type="text" [(ngModel)]="searchName" placeholder="Search by name" />
+    <button (click)="onSearch()">Search</button>
+    <table>
+        <thead>
+            <tr>
+                <th (click)="onSort('name')">Name</th>
+                <th (click)="onSort('price')">Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of filteredProducts">
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.status }}</td>
+                <td>
+                    <button (click)="editProduct(product)">Edit</button>
+                    <button (click)="toggleStatus(product)">
+                        {{ product.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

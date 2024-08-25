@@ -1,0 +1,18 @@
+<div class="modal">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" type="text" />
+
+        <label for="price">Price</label>
+        <input id="price" formControlName="price" type="number" />
+
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+        </select>
+
+        <button type="submit">{{ isEdit ? 'Update' : 'Add' }}</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+    </form>
+</div>
