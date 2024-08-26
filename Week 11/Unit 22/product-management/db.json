@@ -20,7 +20,7 @@
       "id": "4",
       "name": "LG TV",
       "price": 120,
-      "status": "INACTIVE",
+      "status": "ACTIVE",
       "createdAt": "2023-01-04T12:00:00Z",
       "updatedAt": "2023-01-04T12:00:00Z"
     },
@@ -42,7 +42,7 @@
       "id": "7",
       "name": "Macbook Pro 2023",
       "price": 250,
-      "status": "INACTIVE",
+      "status": "ACTIVE",
       "createdAt": "2023-01-07T12:00:00Z",
       "updatedAt": "2023-01-07T12:00:00Z"
     },
@@ -99,12 +99,6 @@
       "status": "INACTIVE",
       "createdAt": "2023-01-15T12:00:00Z",
       "updatedAt": "2023-01-15T12:00:00Z"
-    },
-    {
-      "name": "LATEST edut",
-      "price": 123,
-      "status": "INACTIVE",
-      "id": "f4ad"
     }
   ]
 }
