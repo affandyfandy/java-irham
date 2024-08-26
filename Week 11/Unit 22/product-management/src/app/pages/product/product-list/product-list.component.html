@@ -18,16 +18,15 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price | currency }}</td>
                 <td>
-                    <span [class.active]="product.status === 'ACTIVE'">{{ product.status }}</span>
+                    <label class="switch">
+                        <input type="checkbox" [checked]="product.status === 'ACTIVE'" (change)="toggleStatus(product)">
+                        <span class="slider round"></span>
+                    </label>
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <label class="switch">
-                            <input type="checkbox" [checked]="product.status === 'ACTIVE'"
-                                (change)="toggleStatus(product)">
-                            <span class="slider round"></span>
-                        </label>
                         <button (click)="editProduct(product)">Edit</button>
+                        <button (click)="deleteProduct(product.id)" class="delete-button">Delete</button>
                     </div>
                 </td>
             </tr>

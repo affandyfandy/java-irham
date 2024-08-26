@@ -35,7 +35,11 @@ export class ProductFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      this.save.emit(this.productForm.value);
+      const productData = this.productForm.value;
+      if (this.product) {
+        productData.id = this.product.id;
+      }
+      this.save.emit(productData);
       this.onClose();
     }
   }

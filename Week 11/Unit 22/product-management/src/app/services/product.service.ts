@@ -29,4 +29,8 @@ export class ProductService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Product>(url);
   }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

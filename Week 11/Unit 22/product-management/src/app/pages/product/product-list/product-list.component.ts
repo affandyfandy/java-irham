@@ -32,6 +32,10 @@ export class ProductListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getProductlist();
+  }
+
+  getProductlist(): void {
     this.productService.getProducts().subscribe((products) => {
       this.products = products;
       this.updateFilteredProducts();
@@ -51,11 +55,16 @@ export class ProductListComponent implements OnInit {
   onSave(product: Product): void {
     if (this.selectedProduct) {
       const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
-      this.products[index] = product;
+      this.productService.updateProduct(product).subscribe((result) => {
+        this.products[index] = result;
+        this.updateFilteredProducts();
+      });
+
     } else {
-      this.products.push(product);
+      this.productService.addProduct(product).subscribe((result) => {
+        this.getProductlist();
+      });
     }
-    this.updateFilteredProducts();
     this.isModalVisible = false;
   }
 
@@ -81,11 +90,20 @@ export class ProductListComponent implements OnInit {
 
   toggleStatus(product: Product) {
     product.status = product.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-    this.productService.updateProduct(product);
+    this.productService.updateProduct(product).subscribe();
   }
 
   onPageChange(page: number): void {
     this.currentPage = page;
     this.updateFilteredProducts();
+  }
+
+  deleteProduct(id: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe(() => {
+        this.products = this.products.filter(product => product.id !== id);
+        this.updateFilteredProducts();
+      });
+    }
   }
 }
