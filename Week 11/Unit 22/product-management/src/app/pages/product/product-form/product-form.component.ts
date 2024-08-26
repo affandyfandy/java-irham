@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProductService } from '../../../services/product.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from '../../../models/product.model';
 
 @Component({
   selector: 'app-product-form',
@@ -12,49 +11,37 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./product-form.component.scss'],
 })
 export class ProductFormComponent implements OnInit {
-  productForm: FormGroup;
-  isEdit: boolean = false;
-  productId?: number;
+  @Input() product: Product | null = null;
+  @Output() save = new EventEmitter<Product>();
+  @Output() cancel = new EventEmitter<void>();
 
-  constructor(
-    private fb: FormBuilder,
-    private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.productForm = this.fb.group({
-      name: ['', Validators.required],
-      price: [0, Validators.required],
-      status: ['ACTIVE', Validators.required],
-    });
+  productForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    price: ['', Validators.required],
+    status: ['ACTIVE', Validators.required],
+  });
+  isVisible = true;
+
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.productId = this.route.snapshot.params['id'];
-    this.isEdit = !!this.productId;
-    if (this.isEdit) {
-      this.productService.getProducts().subscribe(products => {
-        const prod = products.find(p => p.id === +this.productId!);
-        if (prod) {
-          this.productForm.patchValue(prod);
-        }
-      });
-    }
+    this.productForm = this.fb.group({
+      name: [this.product?.name || '', Validators.required],
+      price: [this.product?.price || '', Validators.required],
+      status: [this.product?.status || 'ACTIVE', Validators.required],
+    });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.productForm.valid) {
-      if (this.isEdit) {
-        const updatedProduct = { ...this.productForm.value, id: this.productId };
-        this.productService.updateProduct(updatedProduct);
-      } else {
-        this.productService.addProduct(this.productForm.value);
-      }
-      this.router.navigate(['/products']);
+      this.save.emit(this.productForm.value);
+      this.onClose();
     }
   }
 
-  onCancel() {
-    this.router.navigate(['/products']);
+  onClose(): void {
+    this.isVisible = false;
+    this.cancel.emit();
   }
 }

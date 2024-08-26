@@ -2,7 +2,7 @@
     "products": [
         {
             "id": 1,
-            "name": "Product A",
+            "name": "iPhone 15 Pro",
             "price": 100.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-01T12:00:00Z",
@@ -10,7 +10,7 @@
         },
         {
             "id": 2,
-            "name": "Product B",
+            "name": "Macbook Air 2022",
             "price": 200.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-02T12:00:00Z",
@@ -18,7 +18,7 @@
         },
         {
             "id": 3,
-            "name": "Product C",
+            "name": "Samsung Galaxy S22",
             "price": 150.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-03T12:00:00Z",
@@ -26,7 +26,7 @@
         },
         {
             "id": 4,
-            "name": "Product D",
+            "name": "LG TV",
             "price": 120.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-04T12:00:00Z",
@@ -34,7 +34,7 @@
         },
         {
             "id": 5,
-            "name": "Product E",
+            "name": "Air Conditioner",
             "price": 80.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-05T12:00:00Z",
@@ -42,7 +42,7 @@
         },
         {
             "id": 6,
-            "name": "Product F",
+            "name": "Hairdryer",
             "price": 300.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-06T12:00:00Z",
@@ -50,7 +50,7 @@
         },
         {
             "id": 7,
-            "name": "Product G",
+            "name": "Macbook Pro 2023",
             "price": 250.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-07T12:00:00Z",
@@ -58,7 +58,7 @@
         },
         {
             "id": 8,
-            "name": "Product H",
+            "name": "iPhone 12",
             "price": 90.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-08T12:00:00Z",
@@ -66,7 +66,7 @@
         },
         {
             "id": 9,
-            "name": "Product I",
+            "name": "Samsung Galaxy Z Flip",
             "price": 110.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-09T12:00:00Z",
@@ -74,7 +74,7 @@
         },
         {
             "id": 10,
-            "name": "Product J",
+            "name": "Asus ROG 2024",
             "price": 210.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-10T12:00:00Z",
@@ -82,7 +82,7 @@
         },
         {
             "id": 11,
-            "name": "Product K",
+            "name": "Lenovo Laptop",
             "price": 130.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-11T12:00:00Z",
@@ -90,7 +90,7 @@
         },
         {
             "id": 12,
-            "name": "Product L",
+            "name": "Asus Zenfone",
             "price": 160.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-12T12:00:00Z",
@@ -98,7 +98,7 @@
         },
         {
             "id": 13,
-            "name": "Product M",
+            "name": "Samsung Galaxy A51",
             "price": 140.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-13T12:00:00Z",
@@ -106,7 +106,7 @@
         },
         {
             "id": 14,
-            "name": "Product N",
+            "name": "Another Product",
             "price": 270.00,
             "status": "INACTIVE",
             "createdAt": "2023-01-14T12:00:00Z",
@@ -114,7 +114,7 @@
         },
         {
             "id": 15,
-            "name": "Product O",
+            "name": "I don't know the name",
             "price": 220.00,
             "status": "ACTIVE",
             "createdAt": "2023-01-15T12:00:00Z",

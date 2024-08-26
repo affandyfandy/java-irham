@@ -1,26 +1,32 @@
 @import '../../../../styles/variables';
 
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container input {
+    flex: 1;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 12px;
+}
+
+.search-container button {
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
 .action-buttons {
     display: flex;
     align-items: center;
 }
 
-
 .action-buttons .switch {
     margin-right: 10px;
-}
-
-button {
-    background-color: $secondary-color;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: darken($secondary-color, 10%);
-    }
 }
 
 .active {
@@ -66,7 +72,7 @@ button {
 }
 
 input:checked+.slider {
-    background-color: $secondary-color;
+    background-color: #00d991;
 }
 
 input:checked+.slider:before {
@@ -75,10 +81,6 @@ input:checked+.slider:before {
 
 input:focus+.slider {
     box-shadow: 0 0 1px #0366d6;
-}
-
-.container {
-    margin: 20px;
 }
 
 table {
@@ -115,14 +117,6 @@ table {
     margin-top: 20px;
 
     button {
-        background-color: $secondary-color;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        margin: 0 5px;
-        border-radius: 4px;
-        cursor: pointer;
-
         &:disabled {
             background-color: #ccc;
             cursor: not-allowed;

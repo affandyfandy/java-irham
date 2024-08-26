@@ -1,18 +1,24 @@
-<div class="modal">
-    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-        <label for="name">Name</label>
-        <input id="name" formControlName="name" type="text" />
-
-        <label for="price">Price</label>
-        <input id="price" formControlName="price" type="number" />
-
-        <label for="status">Status</label>
-        <select id="status" formControlName="status">
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
-        </select>
-
-        <button type="submit">{{ isEdit ? 'Update' : 'Add' }}</button>
-        <button type="button" (click)="onCancel()">Cancel</button>
-    </form>
+<div class="modal-overlay" *ngIf="isVisible" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>{{ product ? 'Edit Product' : 'Add Product' }}</h2>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <label>
+                Name:
+                <input formControlName="name" />
+            </label>
+            <label>
+                Price:
+                <input formControlName="price" type="number" />
+            </label>
+            <label>
+                Status:
+                <select formControlName="status">
+                    <option value="ACTIVE">Active</option>
+                    <option value="INACTIVE">Inactive</option>
+                </select>
+            </label>
+            <button type="submit">Save</button>
+            <button type="button" (click)="onClose()">Cancel</button>
+        </form>
+    </div>
 </div>
