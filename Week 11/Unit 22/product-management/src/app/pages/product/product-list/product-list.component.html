@@ -1,27 +1,41 @@
-<div>
-    <input type="text" [(ngModel)]="searchName" placeholder="Search by name" />
-    <button (click)="onSearch()">Search</button>
+<div class="container">
+    <input type="text" [(ngModel)]="searchName" (keydown.enter)="updateFilteredProducts()"
+        placeholder="Search by name.." />
     <table>
         <thead>
             <tr>
                 <th (click)="onSort('name')">Name</th>
                 <th (click)="onSort('price')">Price</th>
-                <th>Status</th>
+                <th (click)="onSort('status')">Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let product of filteredProducts">
                 <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.status }}</td>
+                <td>{{ product.price | currency }}</td>
                 <td>
-                    <button (click)="editProduct(product)">Edit</button>
-                    <button (click)="toggleStatus(product)">
-                        {{ product.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
-                    </button>
+                    <span [class.active]="product.status === 'ACTIVE'">{{ product.status }}</span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <label class="switch">
+                            <input type="checkbox" [checked]="product.status === 'ACTIVE'"
+                                (change)="toggleStatus(product)">
+                            <span class="slider round"></span>
+                        </label>
+                        <button (click)="editProduct(product)">Edit</button>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }}</span>
+        <button (click)="onPageChange(currentPage + 1)"
+            [disabled]="currentPage * itemsPerPage >= products.length">Next</button>
+    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
 import { Router } from '@angular/router';
@@ -12,12 +12,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchName: string = '';
   sortColumn: string = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
+
+  // Pagination properties
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(
     private productService: ProductService,
@@ -27,23 +31,24 @@ export class ProductListComponent {
   ngOnInit(): void {
     this.productService.getProducts().subscribe((products) => {
       this.products = products;
-      this.filteredProducts = [...products];
+      this.updateFilteredProducts();
     });
-  }
-
-  onSearch() {
-    this.filteredProducts = this.products.filter((p) =>
-      p.name.toLowerCase().includes(this.searchName.toLowerCase())
-    );
   }
 
   onSort(column: keyof Product) {
     this.sortColumn = column;
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    this.filteredProducts.sort((a, b) => {
-      const comparison = a[column] < b[column] ? -1 : 1;
-      return this.sortDirection === 'asc' ? comparison : -comparison;
-    });
+    this.updateFilteredProducts();
+  }
+
+  updateFilteredProducts(): void {
+    this.filteredProducts = this.products
+      .filter(product => product.name.toLowerCase().includes(this.searchName.toLowerCase()))
+      .sort((a, b) => {
+        const comparison = (a as any)[this.sortColumn] < (b as any)[this.sortColumn] ? -1 : 1;
+        return this.sortDirection === 'asc' ? comparison : -comparison;
+      })
+      .slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
   }
 
   editProduct(product: Product) {
@@ -53,5 +58,10 @@ export class ProductListComponent {
   toggleStatus(product: Product) {
     product.status = product.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
     this.productService.updateProduct(product);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updateFilteredProducts();
   }
 }
