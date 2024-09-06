@@ -1,0 +1,6 @@
+{
+  "customers": [
+    { "id": "1", "firstname": "Rose", "lastname": "Lee" },
+    { "id": "2", "firstname": "Aley", "lastname": "ZZ" }
+  ]
+}

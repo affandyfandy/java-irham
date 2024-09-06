@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="search-container">
+        <input type="text" [(ngModel)]="searchName" (keydown.enter)="updateFilteredProducts()"
+            placeholder="Search by name.." />
+        <button (click)="addProduct()">Add Product</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th (click)="onSort('id')">ID</th>
+                <th (click)="onSort('name')">Name</th>
+                <th (click)="onSort('price')">Price</th>
+                <th (click)="onSort('status')">Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of filteredProducts">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price | currency }}</td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" [checked]="product.status === 'ACTIVE'" (change)="toggleStatus(product)">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button (click)="editProduct(product)">Edit</button>
+                        <button (click)="deleteProduct(product.id)" class="delete-button">Delete</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }}</span>
+        <button (click)="onPageChange(currentPage + 1)"
+            [disabled]="currentPage * itemsPerPage >= products.length">Next</button>
+    </div>
+
+    <app-product-form *ngIf="isModalVisible" [product]="selectedProduct" (save)="onSave($event)"
+        (cancel)="onCancel()"></app-product-form>
+</div>
