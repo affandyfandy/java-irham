@@ -178,10 +178,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     final private UserRepository userRepository;
     final private PasswordEncoder passwordEncoder;
+    final private JwtEncoder jwtEncoder;
+    final private AuthenticationManager authenticationManager;
     
     @Override
     public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode password before save it into the database
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -189,34 +191,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
-}
-```
 
-### [AuthenticationController](demo-project/auth/src/main/java/findo/auth/controller/AuthenticationController.java)
-Create a controller for authentication endpoints.
-```java
-@RestController
-@RequestMapping("/api/v1/auth")
-@AllArgsConstructor
-public class AuthenticationController {
-
-    final private AuthenticationService authenticationService;
-    final private JwtEncoder jwtEncoder;
-    final private AuthenticationManager authenticationManager;
-
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthDTO user) {
-        User userData = new User();
-        userData.setUsername(user.getUsername());
-        userData.setPassword(user.getPassword());
-        userData.setRole("BASIC");
-        
-        authenticationService.saveUser(userData);
-        return ResponseEntity.ok("User registered");
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthDTO authRequest) {
+    @Override
+    public Optional<String> login(AuthDTO authRequest) {
         try {
             // User authentication
             Authentication authentication = authenticationManager.authenticate(
@@ -242,8 +219,41 @@ public class AuthenticationController {
             // Encode JWT using claim
             String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-            return ResponseEntity.ok(token);
+            return Optional.ofNullable(token);
         } catch (AuthenticationException e) {
+            return null;
+        }
+    }    
+}
+```
+
+### [AuthenticationController](demo-project/auth/src/main/java/findo/auth/controller/AuthenticationController.java)
+Create a controller for authentication endpoints.
+```java
+@RestController
+@RequestMapping("/api/v1/auth")
+@AllArgsConstructor
+public class AuthenticationController {
+
+    final private AuthenticationService authenticationService;
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody AuthDTO user) {
+        User userData = new User();
+        userData.setUsername(user.getUsername());
+        userData.setPassword(user.getPassword());
+        userData.setRole("BASIC");
+        
+        authenticationService.saveUser(userData);
+        return ResponseEntity.ok("User registered");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthDTO authRequest) {
+        Optional<String> token = authenticationService.login(authRequest);
+        if (token != null) {
+            return ResponseEntity.ok(token.get());
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
