@@ -1,5 +1,8 @@
 package findo.auth.service;
 
+import findo.auth.data.entity.User;
+
 public interface AuthenticationService {
-    boolean isValidApiKey(String apiKey);
+    User saveUser(User user);
+    User findByUsername(String username);
 }

@@ -1,8 +1,10 @@
 package findo.auth.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import findo.auth.data.repository.ApiKeyRepository;
+import findo.auth.data.entity.User;
+import findo.auth.data.repository.UserRepository;
 import findo.auth.service.AuthenticationService;
 import lombok.AllArgsConstructor;
 
@@ -10,10 +12,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     
-    final private ApiKeyRepository apiKeyRepository;
+    final private UserRepository userRepository;
+    final private PasswordEncoder passwordEncoder;
+    
+    @Override
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
     @Override
-    public boolean isValidApiKey(String apiKey) {
-        return apiKeyRepository.findByApiKey(apiKey).isPresent();
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 }
